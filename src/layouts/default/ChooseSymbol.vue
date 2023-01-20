@@ -2,7 +2,7 @@
     <v-select
       class="select"
       label="Select"
-      :items="symbols"
+      :items="symbols.slice(0,15)"
       v-model="symbolSelected"
     ></v-select>
 </template>
@@ -10,7 +10,7 @@
 <script>
 import {useCoinStore} from "@/stores/current-coin";
 import {requestServerGet} from "@/hooks/request-server";
-import {EXCHANGE_INFO, SORT_SYMBOL} from "@/const/const";
+import {CURRENT_SYMBOL, EXCHANGE_INFO, SORT_SYMBOL} from "@/const/const";
 
 export default {
   name: "ChooseSymbol",
@@ -34,6 +34,7 @@ export default {
   watch: {
     symbolSelected() {
       this.coinStore.updateCoin(this.symbolSelected);
+      localStorage.setItem(CURRENT_SYMBOL, this.symbolSelected)
     }
   },
 }

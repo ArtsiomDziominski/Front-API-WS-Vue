@@ -3,12 +3,24 @@
     app
   >
     <v-container class="fill-height d-flex align-center">
-      <v-btn><router-link to="/">Main</router-link></v-btn>
-      <v-btn><router-link to="/setting">Setting</router-link></v-btn>
+      <v-btn @click="toMain">Main</v-btn>
+      <v-btn @click="toSetting">Setting</v-btn>
     </v-container>
   </v-app-bar>
 </template>
 
-<script setup>
-//
+<script>
+import router from "@/router";
+
+export default {
+  methods: {
+    toMain() {
+      router.push({path:'/'})
+    },
+    toSetting() {
+      router.push({path: '/setting'})
+    }
+
+  }
+}
 </script>

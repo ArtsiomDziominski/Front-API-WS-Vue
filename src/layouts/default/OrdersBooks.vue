@@ -1,7 +1,8 @@
 <template>
   <div class="orders">
-    <order-book :order-book="this.orders.asks"></order-book>
-    <order-book :order-book="this.orders.bids"></order-book>
+    <order-book class="orders__book" :order-book="this.orders.asks"></order-book>
+    <current-price></current-price>
+    <order-book class="orders__book" :order-book="this.orders.bids"></order-book>
   </div>
 </template>
 
@@ -10,10 +11,11 @@ import OrderBook from "@/components/OrderBook.vue";
 import {mapWritableState} from "pinia";
 import {useCoinStore} from "@/stores/current-coin";
 import mixinOrderBook from "@/mixin/order-book";
+import CurrentPrice from "@/components/CurrentPrice.vue";
 
 export default {
   name: "OrdersBooks",
-  components: {OrderBook},
+  components: {CurrentPrice, OrderBook},
   mixins: [mixinOrderBook],
   data() {
     return {
@@ -40,10 +42,11 @@ export default {
 
 <style scoped>
 .orders {
-  display: flex;
-  justify-content: space-around;
-  flex-wrap: wrap;
-  margin-top: 10px;
   padding: 20px;
 }
+
+.orders__book {
+  width: 600px;
+}
+
 </style>

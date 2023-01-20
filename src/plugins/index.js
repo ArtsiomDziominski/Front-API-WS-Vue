@@ -10,6 +10,7 @@ import vuetify from './vuetify'
 import router from '../router'
 import {createPinia} from "pinia";
 import pluginOrderBook from "@/plugins/plugin.order-book";
+import pluginCurrentPrice from "@/plugins/plugin.current-price";
 
 export function registerPlugins(app) {
   const pinia = createPinia()
@@ -20,5 +21,6 @@ export function registerPlugins(app) {
     .use(router)
     .use(pinia)
     .use(pluginOrderBook)
+    .use(pluginCurrentPrice)
 
 }

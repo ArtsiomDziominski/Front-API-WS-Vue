@@ -2,7 +2,7 @@
   <div class="display-1 order-book">
     <p class="order-book__title">{{ orderBook.title }}</p>
 
-    <v-table class="table" height="85vh" fixed-header>
+    <v-table class="table" height="38vh" fixed-header>
       <thead>
       <tr>
         <th class="text-left">
@@ -23,7 +23,7 @@
       >
         <td>{{ +order[0] }}</td>
         <td>{{ +order[1] }}</td>
-        <td class="order__total">{{ order[2] }}</td>
+        <td class="order__total">{{ order[0] * order[1] }}</td>
       </tr>
       </tbody>
 
@@ -56,14 +56,11 @@ export default {
 .order-book {
   border: 1px solid #c9c9c9;
   border-radius: 5px;
+  margin: auto;
 }
 
 .order-book__title {
   text-align: center;
-}
-
-.table {
-  width: 500px;
 }
 
 .table__loader {
