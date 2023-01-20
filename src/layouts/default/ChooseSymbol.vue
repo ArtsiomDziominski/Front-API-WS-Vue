@@ -1,10 +1,10 @@
 <template>
-    <v-select
-      class="select"
-      label="Select"
-      :items="symbols.slice(0,15)"
-      v-model="symbolSelected"
-    ></v-select>
+  <v-select
+    class="select"
+    label="Select"
+    :items="symbols.slice(0,15)"
+    v-model="symbolSelected"
+  ></v-select>
 </template>
 
 <script>
@@ -25,16 +25,14 @@ export default {
     requestServerGet(EXCHANGE_INFO)
       .then(orderAll => {
         const orderList = orderAll.data.symbols
-        this.symbols = [];
-        orderList.forEach(order => {
-          if (order.symbol.slice(order.symbol.length - 4) === SORT_SYMBOL) this.symbols.push(order.symbol);
-        })
+        const symbolLength = SORT_SYMBOL.length;
+        this.symbols = orderList.filter((order) => order.symbol.slice(order.symbol.length - symbolLength) === SORT_SYMBOL).map(order => order.symbol);
       })
   },
   watch: {
     symbolSelected() {
       this.coinStore.updateCoin(this.symbolSelected);
-      localStorage.setItem(CURRENT_SYMBOL, this.symbolSelected)
+      localStorage.setItem(CURRENT_SYMBOL, this.symbolSelected);
     }
   },
 }

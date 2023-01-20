@@ -19,14 +19,13 @@
       <tbody>
       <p class="table__loader" v-if="!orderBook.orderList.length">Загрузка...</p>
       <tr
-        v-for="order in orderBook.orderList"
+        v-for="order in orderBook?.orderList"
       >
-        <td>{{ +order[0] }}</td>
-        <td>{{ +order[1] }}</td>
+        <td>{{ order[0] }}</td>
+        <td>{{ order[1] }}</td>
         <td class="order__total">{{ order[0] * order[1] }}</td>
       </tr>
       </tbody>
-
     </v-table>
   </div>
 </template>
@@ -74,7 +73,7 @@ td {
 
 @media only screen and (max-width: 600px) {
   .table {
-    width: 310px;
+    width: 100%;
   }
 
   .order__total {

@@ -1,5 +1,5 @@
 <template>
-  <p class="ma-5 text-center font-weight-bold">{{ +currentPrice }} USDT</p>
+  <p class="ma-5 text-center font-weight-bold">{{ currentPrice }} USDT</p>
 </template>
 
 <script>
@@ -13,11 +13,12 @@ export default {
   data() {
     return {
       connection: null,
-      currentPrice: this.$currentPrice
+      currentPrice: 'Загрузка...',
     }
   },
   created() {
     this.getCurrentPrice();
+    setInterval(()=> this.currentPrice = this.$currentPrice,1000);
   },
   computed: {
     ...mapWritableState(useCoinStore, {
@@ -25,7 +26,7 @@ export default {
     }),
   },
   unmounted() {
-    this.connection.close()
+    this.$connectionCurrentPrice.close();
   }
 }
 </script>

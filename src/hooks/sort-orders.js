@@ -1,46 +1,32 @@
+import {changeStringToNumber} from "@/hooks/change-string-to-number";
+
 export default {
-  sortOrders(depthUpdate, orderList, currentPrice) {
-    currentPrice = Number(currentPrice)
+  sortOrders(newOrderItems, orderList, currentPrice) {
+    currentPrice = Number(currentPrice);
+    newOrderItems = changeStringToNumber(newOrderItems);
 
-    depthUpdate.forEach(order => {
-      order[0] = Number(order[0]);
-      order[1] = Number(order[1]);
-      if (order[1] > 0) orderList.push(order);
-    })
+    const filteredItems = newOrderItems.filter((item) => !!item[1]);
+    orderList.push(...filteredItems);
 
-    orderList.sort((a, b) => {
-      if (a[0] > b[0]) {
-        return 1;
-      }
-      if (a[0] < b[0]) {
-        return -1;
-      }
-      return 0;
-    })
+    orderList.sort((a, b) => a[0] - b[0])
 
+    return this.searchDuplicates(orderList, currentPrice)
+  },
+  searchDuplicates(orderList, currentPrice) {
     const sort = [];
-    const sortList = [];
     let sortedOrderList = [];
 
     orderList.forEach(order => {
       if (!sort.includes(order[0])) {
-        sortedOrderList.push(order)
-        sort.push(order[0])
-        sortList.push(order)
+        sortedOrderList.push(order);
+        sort.push(order[0]);
+      }else {
+        const currentOrderIndex = sortedOrderList.findIndex(item =>order[0] === item[0]);
+        sortedOrderList[currentOrderIndex][1] +=order[1];
       }
     })
-
-    sortedOrderList.forEach(order => {
-      for (let i = 0; i < sortList.length; i++) {
-        if (order[0] === sortList[i][0]) {
-          order[1] += sortList[i][1]
-        }
-      }
-    })
-
-    sortedOrderList = sortedOrderList.filter(order => order[0] !== currentPrice)
 
     sortedOrderList.reverse();
-    return sortedOrderList
+    return  sortedOrderList.filter(order => order[0] !== currentPrice)
   }
 }

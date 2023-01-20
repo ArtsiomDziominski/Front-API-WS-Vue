@@ -1,8 +1,8 @@
 <template>
-  <div class="orders">
-    <order-book class="orders__book" :order-book="this.orders.asks"></order-book>
+  <div class="orders" @click="click">
+    <order-book class="orders__book" :order-book="orders.asks"></order-book>
     <current-price></current-price>
-    <order-book class="orders__book" :order-book="this.orders.bids"></order-book>
+    <order-book class="orders__book" :order-book="orders.bids"></order-book>
   </div>
 </template>
 
@@ -28,14 +28,24 @@ export default {
   },
   created() {
     this.getOrderBook();
+    setInterval(()=> {
+      this.orders.bids.orderList = this.$orders.bids.orderList;
+      this.orders.asks.orderList = this.$orders.asks.orderList;
+    },3000)
   },
   computed: {
     ...mapWritableState(useCoinStore, {
       currentSymbol: 'currentSymbol'
     }),
   },
+  methods: {
+    click() {
+      console.log(this.$orders)
+      this.orders = this.$orders;
+    }
+  },
   unmounted() {
-    this.connection.close();
+    this.$connectionOrderBook.close();
   }
 }
 </script>
@@ -47,6 +57,12 @@ export default {
 
 .orders__book {
   width: 600px;
+}
+
+@media only screen and (max-width: 600px) {
+  .orders__book {
+    width: 100%;
+  }
 }
 
 </style>
