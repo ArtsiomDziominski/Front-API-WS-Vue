@@ -8,7 +8,7 @@ export default {
   install(app){
     app.config.globalProperties.$orders = reactive({
       asks: {title: 'asks', orderList: []},
-      bids: {title: 'bids', orderList: []}
+      bids: {title: 'bids', orderList: []},
     })
     app.config.globalProperties.$setOrderBook = (currentSymbol) => {
 
@@ -31,6 +31,7 @@ export default {
 
         app.config.globalProperties.$orders.asks.orderList = orderListAsks;
         app.config.globalProperties.$orders.bids.orderList = orderListBids;
+        app.config.globalProperties.$orders.price = this.$currentPrice;
       }
     };
   }

@@ -1,8 +1,8 @@
 <template>
-  <div class="orders" @click="click">
-    <order-book class="orders__book" :order-book="orders.asks"></order-book>
-    <current-price></current-price>
-    <order-book class="orders__book" :order-book="orders.bids"></order-book>
+  <div class="orders">
+    <order-book class="orders__book" :order-book="$orders.asks"></order-book>
+    <current-symbol></current-symbol>
+    <order-book class="orders__book" :order-book="$orders.bids"></order-book>
   </div>
 </template>
 
@@ -11,12 +11,13 @@ import OrderBook from "@/components/OrderBook.vue";
 import {mapWritableState} from "pinia";
 import {useCoinStore} from "@/stores/current-coin";
 import mixinOrderBook from "@/mixin/order-book";
-import CurrentPrice from "@/components/CurrentPrice.vue";
+import CurrentSymbol from "@/components/CurrentSymbol.vue";
+import mixinCurrentPrice from "@/mixin/current-price";
 
 export default {
   name: "OrdersBooks",
-  components: {CurrentPrice, OrderBook},
-  mixins: [mixinOrderBook],
+  components: {CurrentSymbol, OrderBook},
+  mixins: [mixinOrderBook, mixinCurrentPrice],
   data() {
     return {
       connection: null,
@@ -28,24 +29,16 @@ export default {
   },
   created() {
     this.getOrderBook();
-    setInterval(()=> {
-      this.orders.bids.orderList = this.$orders.bids.orderList;
-      this.orders.asks.orderList = this.$orders.asks.orderList;
-    },3000)
+    this.getCurrentPrice();
   },
   computed: {
     ...mapWritableState(useCoinStore, {
       currentSymbol: 'currentSymbol'
     }),
   },
-  methods: {
-    click() {
-      console.log(this.$orders)
-      this.orders = this.$orders;
-    }
-  },
   unmounted() {
     this.$connectionOrderBook.close();
+    this.$connectionCurrentPrice.close();
   }
 }
 </script>
